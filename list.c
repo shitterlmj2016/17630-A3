@@ -385,16 +385,25 @@ bool stackPush(Item item, List *plist) {
 
 Item stackPop(List *plist){
     int len=length(plist);
-    Node *node=getNode(len,plist);
+    Node *node=getNode(len-1,plist);
+
+    //Can't return the pointer, since soon it will be deleted ;
+    //Have to create a return item here.
     Item item= node->item;
-    deleteAt(len, plist);
+
+    //Delete the node
+    deleteAt(len-1, plist);
+
     return item;
 }
 
 Item stackPeek(List *plist){
     int len=length(plist);
-    Node *node=getNode(len,plist);
+    Node *node=getNode(len-1,plist);
+
+
     Item item= node->item;
+
     return item;
 }
 
