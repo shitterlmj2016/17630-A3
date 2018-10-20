@@ -31,16 +31,6 @@ int main(void) {
 
     initList(&stackPeople);//Initialize the list
     initList(&queuePeople);//Initialize the queue
-    //test
-    Item item1;
-    strcpy(item1.firstName, "111");
-    strcpy(item1.lastName, "1111");
-    strcpy(item1.birthday, "10-10-1995");
-    append(item1, &stackPeople);
-    strcpy(item1.firstName, "222");
-    strcpy(item1.lastName, "2222");
-    strcpy(item1.birthday, "10-10-1995");
-    append(item1, &stackPeople);
 
 
 
@@ -96,8 +86,6 @@ int main(void) {
         //If the user input x or X, the program will terminate
         if (strcmp(buf, "x") == 0 || strcmp(buf, "X") == 0) {
             puts("exiting...");
-            emptyTheList(&stackPeople); //Free the list, do some clean up job
-            emptyTheList(&queuePeople);
             return 0;
         }
 
@@ -139,28 +127,31 @@ int main(void) {
 
         //File opened successfully.
         char buf[NSIZE];
-        while (fgets(buf, NSIZE, fp) != NULL) {   //In each round, copy the person's data from the file
+        Item new;
+        int counter=0;
+        while (!feof(fp)) {   //In each round, copy the person's data from the file
+
             //Copy the first name
-            Item new;
-            len = strlen(buf);
+            fgets(buf, NSIZE, fp);
+//            int len=strlen(buf);
+//            //Add \0 to the end of the string
+//            buf[len - 1] = '\0';
             //Add \0 to the end of the string
-            buf[len - 1] = '\0';
-            strcpy(new.firstName, buf);
-
-            //Copy the last name
-            fgets(buf, NSIZE, fp);
-            len = strlen(buf);
-            buf[len - 1] = '\0';
-            strcpy(new.lastName, buf);
-
-            //Copy user's birthday
-            fgets(buf, NSIZE, fp);
-            len = strlen(buf);
-            buf[len - 1] = '\0';
-            strcpy(new.birthday, buf);
-            append(new, &stackPeople);
+            //Copy the data
+            if(buf[strlen(buf)-1] == '\n')
+                buf[strlen(buf)-1] = '\0';
+            if(counter%3==0)
+                strcpy(new.firstName, buf);
+            if(counter%3==1)
+                strcpy(new.lastName, buf);
+            if(counter%3==2) {
+                strcpy(new.birthday, buf);
+                append(new, &stackPeople);
+            }
+            counter++;
         }
         puts("Import successful!");
+        fclose(fp);
         //Showing the whole list to user after importing the data
         printf("Here's the whole stack:\n");
         //Traverse the list to get the whole information
@@ -274,6 +265,7 @@ int main(void) {
 
     s7: {
     initList(&stackPeople);
+    puts("Stack deleted! Now returning to the main menu");
     goto stack;
     }
 
@@ -302,19 +294,22 @@ int main(void) {
             Item new;
             len = strlen(buf);
             //Add \0 to the end of the string
-            buf[len - 1] = '\0';
+            if(buf[strlen(buf)-1] == '\n')
+                buf[strlen(buf)-1] = '\0';
             strcpy(new.firstName, buf);
 
             //Copy the last name
             fgets(buf, NSIZE, fp);
             len = strlen(buf);
-            buf[len - 1] = '\0';
+            if(buf[strlen(buf)-1] == '\n')
+                buf[strlen(buf)-1] = '\0';
             strcpy(new.lastName, buf);
 
             //Copy user's birthday
             fgets(buf, NSIZE, fp);
             len = strlen(buf);
-            buf[len - 1] = '\0';
+            if(buf[strlen(buf)-1] == '\n')
+                buf[strlen(buf)-1] = '\0';
             strcpy(new.birthday, buf);
             append(new, &queuePeople);
         }
@@ -430,6 +425,7 @@ int main(void) {
 
     q7:
     initList(&queuePeople);
+    puts("Queue deleted! Now returning to the main menu");
     goto queue;
 
 }
