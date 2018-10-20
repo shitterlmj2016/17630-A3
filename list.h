@@ -46,6 +46,7 @@ typedef struct node {
     struct node *next; //The pointer to the next node.
 } Node;
 
+//int globalCount=0; //GlobalCounter
 
 typedef Node *List; //The pointer to the first node in the linked list
 

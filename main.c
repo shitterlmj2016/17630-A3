@@ -8,7 +8,9 @@ bool isNumber(char num[]);//Determine if a string is a number or not
 
 void showPeople(Item item) {
     //Printer the first name, the last name and the birthday of the one person.
+    //printf("%d\n:",globalCount);
     printf("Firstname: %s Lastname:%s Birthday:%s\n", item.firstName, item.lastName, item.birthday);
+    //globalCount++;
 }
 
 //Return true only if the argument can be interpreted as a number
@@ -55,38 +57,11 @@ int main(void) {
 
 
 
-    puts("User Menu");
-    puts("Please choose your option by input a character:");
-    puts("----------------------------------------------------------------");
-    puts("1:Create a stack");
-    puts("2:Create a queue");
-    puts("x:Exit");
-    puts("----------------------------------------------------------------");
-
-    char buf[255];//User input something here to choose a option
-    scanf("%s", buf);//Get user's input
-
-    //*Clean the buff
-    scanf("%*[^\n]");
-    scanf("%*c");
-    label0:
-    //If the user input x or X, the program will terminate
-    if (strcmp(buf, "x") == 0 || strcmp(buf, "X") == 0) {
-        puts("exiting...");
-        emptyTheList(&stackPeople); //Free the list, do some clean up job
-        return 0;
-    }
-
-    if (strcmp(buf, "1") == 0) goto stack;
-    if (strcmp(buf, "2") == 0) goto queue;
-    puts("Wrong input, try again!");
-    goto label0;
-
-
     stack:
-    {
+    queue:
+    //main menu
+    {   puts("Please choose your option by input a character:");
         puts("Stack Menu");
-        puts("Please choose your option by input a character:");
         puts("----------------------------------------------------------------");
         puts("1:Create a stack from a file");
         puts("2:Push an element on the stack");
@@ -94,8 +69,22 @@ int main(void) {
         puts("4:Peek the stack");
         puts("5:Print number of elements in stack.");
         puts("6:Print elements in the stack");
-        puts("x:Delete the stack and exit");
+        puts("7:Delete the stack and exit");
         puts("----------------------------------------------------------------");
+        puts("");
+        puts("Queue Menu");
+        puts("----------------------------------------------------------------");
+        puts("8:Create a queue from a file");
+        puts("9:Enqueue an element");
+        puts("10:Dequeue an element from the queue");
+        puts("11:Peek the queue");
+        puts("12:Print number of elements in queue");
+        puts("13:Print elements in the queue");
+        puts("14:Delete the queue");
+        puts("----------------------------------------------------------------");
+        puts("Press X or x to exit!");
+
+
 
         char buf[255];//User input something here to choose a option
         scanf("%s", buf);//Get user's input
@@ -108,6 +97,7 @@ int main(void) {
         if (strcmp(buf, "x") == 0 || strcmp(buf, "X") == 0) {
             puts("exiting...");
             emptyTheList(&stackPeople); //Free the list, do some clean up job
+            emptyTheList(&queuePeople);
             return 0;
         }
 
@@ -117,6 +107,14 @@ int main(void) {
         if (strcmp(buf, "4") == 0) goto s4;
         if (strcmp(buf, "5") == 0) goto s5;
         if (strcmp(buf, "6") == 0) goto s6;
+        if (strcmp(buf, "7") == 0) goto s7;
+        if (strcmp(buf, "8") == 0) goto q1;
+        if (strcmp(buf, "9") == 0) goto q2;
+        if (strcmp(buf, "10") == 0) goto q3;
+        if (strcmp(buf, "11") == 0) goto q4;
+        if (strcmp(buf, "12") == 0) goto q5;
+        if (strcmp(buf, "13") == 0) goto q6;
+        if (strcmp(buf, "14") == 0) goto q7;
         puts("Wrong input, try again!");
         goto stack;
     }
@@ -136,7 +134,7 @@ int main(void) {
             perror("Fail to read");
             puts("please enter a correct file path!");
             puts("Returning to the main menu...");
-            goto label0;
+            goto stack;
         }
 
         //File opened successfully.
@@ -274,43 +272,11 @@ int main(void) {
 
     }
 
-
-    queue:
-    {
-        puts("Queue Menu");
-        puts("Please choose your option by input a character:");
-        puts("----------------------------------------------------------------");
-        puts("1:Create a queue from a file");
-        puts("2:Enqueue an element");
-        puts("3:Dequeue an element from the queue");
-        puts("4:Peek the queue");
-        puts("5:Print number of elements in queue");
-        puts("6:Print elements in the queue");
-        puts("x:Delete the queue and exit");
-        puts("----------------------------------------------------------------");
-
-        char buf[255];//User input something here to choose a option
-        scanf("%s", buf);//Get user's input
-
-        //*Clean the buff
-        scanf("%*[^\n]");
-        scanf("%*c");
-
-        //If the user input x or X, the program will terminate
-        if (strcmp(buf, "x") == 0 || strcmp(buf, "X") == 0) {
-            puts("exiting...");
-            emptyTheList(&queuePeople); //Free the list, do some clean up job
-            return 0;
-        }
-        if (strcmp(buf, "1") == 0) goto q1;
-        if (strcmp(buf, "2") == 0) goto q2;
-        if (strcmp(buf, "3") == 0) goto q3;
-        if (strcmp(buf, "4") == 0) goto q4;
-        if (strcmp(buf, "5") == 0) goto q5;
-        if (strcmp(buf, "6") == 0) goto q6;
-        puts("Wrong input, try again!");
-        goto queue;
+    s7: {
+    initList(&stackPeople);
+    goto stack;
     }
+
 
     q1:
     {
@@ -326,7 +292,7 @@ int main(void) {
             perror("Fail to read");
             puts("please enter a correct file path!");
             puts("Returning to the main menu...");
-            goto label0;
+            goto queue;
         }
 
         //File opened successfully.
@@ -461,6 +427,10 @@ int main(void) {
         printf("Returning to main menu...\n");
         goto queue;
     }
+
+    q7:
+    initList(&queuePeople);
+    goto queue;
 
 }
 

@@ -360,11 +360,14 @@ bool append(Item item, List *plist) {
 }
 
 void traverse(const List *plist, void(*pfun)(Item item)) // Put an function on each node from the list
-{
+{   //globalCount=0;
+    int counter=0;
     Node *pnode = *plist; // Put a pointer to the head node
     while (pnode != NULL) {
+        printf("%d: ",counter);
         (*pfun)(pnode->item);
         pnode = pnode->next;
+        counter++;
     }
 }
 
