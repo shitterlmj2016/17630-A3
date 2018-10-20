@@ -28,7 +28,7 @@ int main(void) {
     List queuePeople;//Create a queue
 
     initList(&stackPeople);//Initialize the list
-
+    initList(&queuePeople);//Initialize the queue
     //test
     Item item1;
     strcpy(item1.firstName, "111");
@@ -47,6 +47,13 @@ int main(void) {
         fprintf(stderr, "No memory available\n");
         exit(EXIT_FAILURE);
     }
+
+    if (listIsFull(&queuePeople)) {//The memory is used up
+        fprintf(stderr, "No memory available\n");
+        exit(EXIT_FAILURE);
+    }
+
+
 
     puts("User Menu");
     puts("Please choose your option by input a character:");
@@ -292,7 +299,7 @@ int main(void) {
         //If the user input x or X, the program will terminate
         if (strcmp(buf, "x") == 0 || strcmp(buf, "X") == 0) {
             puts("exiting...");
-            emptyTheList(&stackPeople); //Free the list, do some clean up job
+            emptyTheList(&queuePeople); //Free the list, do some clean up job
             return 0;
         }
         if (strcmp(buf, "1") == 0) goto q1;
@@ -343,13 +350,13 @@ int main(void) {
             len = strlen(buf);
             buf[len - 1] = '\0';
             strcpy(new.birthday, buf);
-            append(new, &stackPeople);
+            append(new, &queuePeople);
         }
         puts("Import successful!");
         //Showing the whole list to user after importing the data
         printf("Here's the whole queue:\n");
         //Traverse the list to get the whole information
-        traverse(&stackPeople, showPeople);
+        traverse(&queuePeople, showPeople);
         printf("Returning to main menu...\n");
         goto queue;
 
@@ -375,11 +382,11 @@ int main(void) {
     scanf("%*[^\n]");
     scanf("%*c");//Clean the buff
 
-    if (append(tempp, &stackPeople) == false) {//Check if append is succesful
+    if (append(tempp, &queuePeople) == false) {//Check if append is succesful
         fprintf(stderr, "Problem allocating memory\n");
     }
 
-    if (listIsFull(&stackPeople)) {//Check if the list is full.
+    if (listIsFull(&queuePeople)) {//Check if the list is full.
         puts("The list is now full.\n");
     }
 
@@ -392,7 +399,7 @@ int main(void) {
         //Case 1: User wants to exit to the main menu
         printf("Here is the whole list:\n");
         //Show the user the whole list before exiting
-        traverse(&stackPeople, showPeople);
+        traverse(&queuePeople, showPeople);
         printf("Returning to main menu...\n");
         goto queue;
     } else {
@@ -404,12 +411,12 @@ int main(void) {
 
     q3://Dequeue an element
     {
-        if (listIsEmpty(&stackPeople)) {
+        if (listIsEmpty(&queuePeople)) {
             printf("The queue is empty.\n");
             goto queue;
         } else {
-            Item item = queueDequeue(&stackPeople);
-            int length = queueLength(&stackPeople);
+            Item item = queueDequeue(&queuePeople);
+            int length = queueLength(&queuePeople);
             printf("Firstname: %s Lastname:%s Birthday:%s\n", item.firstName, item.lastName, item.birthday);
             printf("The length of the queue is %d\n", length);
             goto queue;
@@ -421,12 +428,12 @@ int main(void) {
 
     q4:
     {
-        if (listIsEmpty(&stackPeople)) {
+        if (listIsEmpty(&queuePeople)) {
             printf("The queue is empty.\n");
             goto queue;
         } else {
-            Item item = queuePeek(&stackPeople);
-            int length = queueLength(&stackPeople);
+            Item item = queuePeek(&queuePeople);
+            int length = queueLength(&queuePeople);
             printf("Firstname: %s Lastname:%s Birthday:%s\n", item.firstName, item.lastName, item.birthday);
             printf("The length of the queue is %d\n", length);
             goto queue;
@@ -435,24 +442,25 @@ int main(void) {
     }
     q5:
     {
-        if (listIsEmpty(&stackPeople)) {
+        if (listIsEmpty(&queuePeople)) {
             printf("The queue is empty.\n");
             goto queue;
         } else {
-            int len=queueLength(&stackPeople);
+            int len=queueLength(&queuePeople);
             printf("The length is %d\n",len);
             goto queue;
         }
 
     }
     q6:
-    if (listIsEmpty(&stackPeople)) {
+    if (listIsEmpty(&queuePeople)) {
         printf("The list is empty.\n");
         goto queue;
     } else {
-        traverse(&stackPeople, showPeople);
+        traverse(&queuePeople, showPeople);
         printf("Returning to main menu...\n");
         goto queue;
     }
 
 }
+
